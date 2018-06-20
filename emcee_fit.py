@@ -96,6 +96,7 @@ def analysis_emcee(x, y, yerr):
 
     # Define the probability function lnprob as likelihood * prior.
     def lnprior(theta):
+        # the current implementation corresponds to uniform priors within the boundaries
         theta_min = p0_bounds[:,0]
         theta_max = p0_bounds[:,1]
         theta_arr = np.array(theta)
