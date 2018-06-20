@@ -6,8 +6,7 @@ import matplotlib.gridspec as gridspec
 from matplotlib.ticker import MaxNLocator
 from scipy.optimize import curve_fit
 import numpy as np
-import emcee # bug: creates two figures when emcee is loaded
-# from itertools import chain
+import emcee
 import sys
 import corner
 
@@ -103,7 +102,7 @@ def lnprob(theta, x, y, yerr):
 
 # variables for emcee
 nWalkers = 20
-nSteps = 10000
+nSteps = 1000
 nBurnin = 500
 
 p0_bounds=[
@@ -170,9 +169,6 @@ def timeplot(filename_basis=""):
 
 timeplot()
 
-# cornerplots
-fig = corner.corner(samples,labels=parameter_names, quantiles=[0.16, 0.5, 0.84],show_titles=True)
-
 # Plot some samples onto the data.
 # Make x-axis array to plot from
 fig = plt.figure()
@@ -183,4 +179,55 @@ samples_rand_select = samples[np.random.randint(len(samples), size=200)]
 for par in samples_rand_select:
 	ax.semilogy(E, f(E,*par), color="k", alpha=0.05)
 
-plt.show() # bug: creates two figures when emcee is loaded
+
+# Posterior distribuion / credibility intervals
+
+# some dummy(!) true values
+p_true = np.array([7.8,3.47,227.,  # 1st resonance
+                   15.,5.23,362.]) # 2nd resonance
+
+# corner plots
+fig = corner.corner(samples,labels=parameter_names, quantiles=[0.16, 0.5, 0.84],
+                    show_titles=True, truths=p_true)
+
+# Compute the quantiles.
+quantiles = map(lambda v: (v[1], v[2]-v[1], v[1]-v[0]),
+                             zip(*np.percentile(samples, [16, 50, 84],
+                                                axis=0)))
+quantiles = np.array(quantiles)
+
+# Get the bounds from the quantiles
+bounds = np.empty((len(quantiles),2))
+bounds[:,0] = quantiles[:,0] - quantiles[:,2] # lower bound
+bounds[:,1] = quantiles[:,0] + quantiles[:,1] # upper bound
+
+
+# (How often) are the "true" parameters within the credibility interval
+def in_bound(theta, bounds):
+    ''' returns array with True/Fals, if theta is within the bounds'''
+    theta_min = bounds[:,0]
+    theta_max = bounds[:,1]
+    theta_arr = np.array(theta)
+
+    above_min = theta_min < theta_arr # True if theta is above the lower boundary
+    below_max = theta_max > theta_arr # True if theta is below the higher boundary
+
+    in_bound = np.logical_and(above_min,below_max)
+    return in_bound
+
+# Histogram over how often the "true"-values is within the bounds
+arr_inbounds = np.zeros(len(p0_for_emcee))
+for i, in_bound in enumerate(in_bound(p_true, bounds)):
+    if in_bound:
+        arr_inbounds[i] += 1
+
+nRuns = 2. # dummy for now
+arr_inbounds /= nRuns # fraction of times p_true was in the mcmc credibility interval
+
+plt.figure()
+plt.step(range(len(p0_for_emcee)),arr_inbounds,where="mid")
+
+plt.xticks(np.arange(len(parameter_names)), parameter_names, rotation=70)
+plt.tight_layout()
+
+plt.show()
