@@ -1,0 +1,60 @@
+#SUBENT      M0603005
+#AUTHORS     G.M.Gurevich, L.E.Lazareva, V.M.Mazur, G.V.Solodukhov
+#REFERENCE   Zhurnal Eksper. i Teoret. Fiz., Pisma v Redakt. Vol.20, p.741
+#YEAR        1974
+#TITLE       232Th, 235U,  238U,  and 239Pu total  photoabsorption
+#+           cross  section in the  giant  resonance region.
+#REACTION    94-PU-239(G,ABS),,SIG,,BRS
+#QUANTITY    Cross section
+#SUBP       M0603005
+#EXFOR data: http://www-nds.iaea.org/EXFOR/M0603.005
+#Data retrieved from the EXFOR database version of May 25, 2018. 
+#Ene,MeV     Sig,mb      dSig,mb
+ 7.8         29          22
+ 8           40          26
+ 8.3         58          28
+ 8.5         69          25
+ 8.8         104         26
+ 9           138         27
+ 9.3         157         24
+ 9.5         200         25
+ 9.8         228         30
+ 10          233         31
+ 10.3        243         32
+ 10.5        317         31
+ 10.7        355         31
+ 11          384         32
+ 11.2        389         30
+ 11.5        395         32
+ 11.7        380         31
+ 12          385         31
+ 12.2        404         30
+ 12.4        396         29
+ 12.7        424         31
+ 13          427         31
+ 13.2        426         31
+ 13.4        447         33
+ 13.7        425         37
+ 14          401         24
+ 14.2        425         37
+ 14.5        396         37
+ 14.7        375         37
+ 15          370         37
+ 15.2        397         37
+ 15.5        332         42
+ 15.7        302         40
+ 15.9        273         48
+ 16.3        275         46
+ 16.5        213         46
+ 16.7        218         48
+ 17          211         47
+ 17.2        177         47
+ 17.4        196         51
+ 17.7        135         49
+ 18          146         50
+ 18.2        177         55
+ 18.5        127         53
+ 18.7        143         59
+ 18.9        117         60
+ 19.2        123         60
+#END
