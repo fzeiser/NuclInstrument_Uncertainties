@@ -40,7 +40,7 @@ def analysis_emcee(x, y, yerr):
         model = f(x, *theta)
         r = theta[-1]
         sigma2 = (yerr/r)**2 # note: if you remove r, this should be set to yerr**2
-        chi2 = np.sum( pow((y-model),2)/sigma2 + np.log(sigma2))
+        chi2 = np.sum( pow((y-model),2)/sigma2 + np.log(sigma2)) # up to constants
         return chi2
 
     # Define the probability function lnprob as likelihood * prior.
